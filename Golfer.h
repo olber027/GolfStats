@@ -15,13 +15,20 @@ private:
     Career career;
 public:
     Golfer(string Name) : name(Name), career(Career()) {}
+    Golfer(const Golfer &golfer) {
+        name = golfer.name;
+        career = golfer.career;
+    }
 
     void addRound(Round round) {
         career.addRound(round);
     }
 
     string getCareerStats() {
-        return career.getCareerStats();
+        stringstream stream;
+        stream << "---------"; stream << name << "---------" << endl;
+        stream << career.getCareerStats();
+        return stream.str();
     }
 
     string getName() {

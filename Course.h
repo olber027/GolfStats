@@ -8,6 +8,7 @@
 #include "Hole.h"
 #include <vector>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
@@ -16,37 +17,50 @@ private:
     vector<Hole> holes;
     string name;
 public:
-    Course(string Name) : name(Name) { holes = vector<Hole>(); }
-    Course(string Name, vector<Hole> holeList) : name(Name), holes(holeList) {}
+    Course() : name("") {
+        holes = vector<Hole>();
+    }
+    Course(string Name) : name(Name) {
+        holes = vector<Hole>();
+    }
+    Course(string Name, vector<Hole> holeList) : name(Name), holes(holeList) { }
+
+    Course(const Course &course) {
+        holes = vector<Hole>();
+        for(int i = 0; i < course.holes.size(); i++) {
+            holes.push_back(course.holes[i]);
+        }
+        name = course.name;
+    }
 
     string getCourseInfo() {
-        string courseInfo = "| ";
-        courseInfo += name;
-        courseInfo += "\n| ";
+        stringstream stream;
+        stream << "| ";
+        stream << name;
+        stream << " |" << endl << "| ";
         for (int i = 0; i < holes.size(); i++) {
-            courseInfo += i + 1; courseInfo += " | ";
+            stream << i+1 << " | ";
         }
-        courseInfo += "\n| ";
+        stream << endl << "| ";
         for(int i = 0; i < holes.size(); i++) {
-            courseInfo += getHole(i+1).getDistance(); courseInfo += " | ";
+            stream << getHole(i+1).getDistance() << " | ";
         }
-        courseInfo += getTotalYardage();
-        courseInfo += " |\n| ";
+        stream << getTotalYardage() << " |\n| ";
         for(int i = 0; i < holes.size(); i++) {
-            courseInfo += getHole(i+1).getPar(); courseInfo += " | ";
+            stream << getHole(i+1).getPar() << " | ";
         }
-        courseInfo += getPar();
-        courseInfo += " |\n";
-
-        return courseInfo;
+        stream << getPar() << " |\n";
+        return stream.str();
     }
 
     Hole getHole(int holeNumber) {
-        if(holeNumber < 0)
+        if(holeNumber < 0) {
             return Hole();
+        }
         for(int i = 0; i < holes.size(); i++) {
-            if(holes[i].getHoleNumber() == holeNumber)
+            if(holes[i].getHoleNumber() == holeNumber) {
                 return holes[i];
+            }
         }
         return Hole();
     }
@@ -71,7 +85,9 @@ public:
         return yardage > 0 ? yardage : -1;
     }
 
-    string getCourseName() { return name; }
+    string getCourseName() {
+        return name;
+    }
 
 };
 

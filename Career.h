@@ -9,6 +9,7 @@
 #include "Utils.h"
 #include <string>
 #include <vector>
+#include <sstream>
 
 class Career {
 private:
@@ -16,14 +17,22 @@ private:
 
 public:
 
-    Career() { rounds = vector<Round>(); }
+    Career() {
+        rounds = vector<Round>();
+    }
+    Career(const Career &career) {
+        rounds = vector<Round>();
+        for(int i = 0; i < career.rounds.size(); i++) {
+            rounds.push_back(career.rounds[i]);
+        }
+    }
 
     void addRound(Round round) {
         rounds.push_back(round);
     }
 
     string getCareerStats() {
-        string stats = "";
+        stringstream stream;
         vector<string> courseNames = vector<string>();
         for(int i = 0; i < rounds.size(); i++) {
             if(!contains(courseNames, rounds[i].getCourse().getCourseName())) {
@@ -35,15 +44,19 @@ public:
             for(int j = 0; j < rounds.size(); j++) {
                 if(rounds[j].getCourse().getCourseName() == courseNames[i]) {
                     if(first) {
-                        stats += rounds[j].getCourse().getCourseInfo();
+                        stream << rounds[j].getCourse().getCourseInfo();
+                        for(int i = 0; i < rounds[j].getCourse().numberOfHoles() * 6; i++) {
+                            stream << "-";
+                        }
+                        stream << endl;
                         first = false;
                     }
-                    stats += rounds[j].getPrintableScores();
+                    stream << rounds[j].getPrintableScores();
                 }
             }
-            stats += "\n";
+            stream << endl;
         }
-        return stats;
+        return stream.str();
     }
 };
 

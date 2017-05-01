@@ -5,6 +5,11 @@
 #ifndef GOLFSTATS_HOLE_H
 #define GOLFSTATS_HOLE_H
 
+#include <string>
+#include <sstream>
+
+using namespace std;
+
 class Hole {
 private:
     int distance;
@@ -13,20 +18,53 @@ private:
     int holeNumber;
 
 public:
-    Hole(int Distance, int Par, int Number, int Score) : distance(Distance), par(Par), holeNumber(Number), score(Score) {}
-    Hole(Hole hole, int Score) : Hole(hole.getDistance(), hole.getPar(), hole.getHoleNumber(), Score) {}
-    Hole(int Distance, int Par, int Number) : Hole(Distance, Par, Number, -1) {}
-    Hole(int Par, int Number) : Hole(-1, Par, Number, -1) {}
-    Hole() : Hole(-1, -1, -1, -1) {}
+    Hole(int Distance, int Par, int Number, int Score) : distance(Distance), par(Par), holeNumber(Number), score(Score) { }
+    Hole(Hole hole, int Score) : Hole(hole.getDistance(), hole.getPar(), hole.getHoleNumber(), Score) { }
+    Hole(int Distance, int Par, int Number) : Hole(Distance, Par, Number, -1) { }
+    Hole(int Par, int Number) : Hole(-1, Par, Number, -1) { }
+    Hole() : Hole(-1, -1, -1, -1) { }
 
-    int getDistance() { return distance; }
-    int getPar() { return par; }
-    int getScore() { return score; }
-    int getHoleNumber() { return holeNumber; }
-    int setDistance(int Distance) { distance = Distance; }
-    int setPar(int Par) { par = Par; }
-    int setScore(int Score) { score = Score; }
-    int setHoleNumber(int number) { holeNumber = number; }
+    Hole(const Hole &hole) {
+        distance = hole.distance;
+        par = hole.par;
+        score = hole.score;
+        holeNumber = hole.holeNumber;
+    }
+
+    int getDistance() {
+        return distance;
+    }
+    int getPar() {
+        return par;
+    }
+    int getScore() {
+        return score;
+    }
+    int getHoleNumber() {
+        return holeNumber;
+    }
+    int setDistance(int Distance) {
+        distance = Distance;
+    }
+    int setPar(int Par) {
+        par = Par;
+    }
+    int setScore(int Score) {
+        score = Score;
+    }
+    int setHoleNumber(int number) {
+        holeNumber = number;
+    }
+
+    string getHoleInfo() {
+        stringstream stream;
+        stream << "| " << holeNumber << " |";
+        stream << "| " << par << " |";
+        stream << "| " << distance << " |";
+        stream << "| " << score << " |";
+        stream << endl;
+        return stream.str();
+    }
 };
 
 #endif //GOLFSTATS_HOLE_H

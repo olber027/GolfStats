@@ -8,6 +8,7 @@
 #include "Course.h"
 #include <vector>
 #include <string>
+#include <sstream>
 
 
 class Round {
@@ -16,19 +17,43 @@ private:
     vector<Hole> scores;
 
 public:
-    Round(Course c) : course(c) { scores = vector<Hole>(); }
+    Round() : course(Course()) {
+        scores = vector<Hole>();
+    }
+
+    Round(Course c) : course(c) {
+        scores = vector<Hole>();
+    }
+
+    Round(const Round &round) {
+        course = round.course;
+        scores = vector<Hole>();
+        for(int i = 0; i < round.scores.size(); i++) {
+            scores.push_back(round.scores[i]);
+        }
+    }
+
 
     void addHole(Hole hole) {
         scores.push_back(hole);
     }
 
     string getPrintableScores() {
-        string Scores = "| ";
+        stringstream stream;
+        stream << "| ";
         for(int i = 0; i < scores.size(); i++) {
-            Scores += getHole(i+1).getScore(); Scores += " | ";
+            stream << getHole(i+1).getScore() << " | ";
         }
-        Scores += "\n";
-        return Scores;
+        stream << getFinalScore() << " |" << endl;
+        return stream.str();
+    }
+
+    int getFinalScore() {
+        int result = 0;
+        for(int i = 0; i < scores.size(); i++) {
+            result += getHole(i+1).getScore();
+        }
+        return result;
     }
 
     Hole getHole(int holeNumber) {
@@ -41,8 +66,12 @@ public:
         return Hole();
     }
 
-    vector<Hole> getScores() { return scores; }
-    Course getCourse() { return course; }
+    vector<Hole> getScores() {
+        return scores;
+    }
+    Course getCourse() {
+        return course;
+    }
 
 };
 

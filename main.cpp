@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include "Windows.h"
@@ -15,43 +16,53 @@
 using namespace std;
 
 string getCSVFilePath();
-Course getCourseInformation(ifstream& in);
-string stripWhitespace(string str);
-vector<string> splitLine(string line);
-string getline(ifstream& in);
+Course getCourseInformation(ifstream& in, string courseName);
+vector<string> getLineAndTokenize(istream& str);
+int stringToInt(string str);
 
 int main() {
 
     vector<Golfer> golfers = vector<Golfer>();
+    vector<Course> courses = vector<Course>();
 
     string file = getCSVFilePath();
     ifstream in;
     in.open(file);
-    char garbage;
-    string line;
 
-    in >> garbage;
+    vector<string> row = getLineAndTokenize(in);
+    Course currentCourse = Course("");
 
     while(!in.eof()) {
-        cout << "\"" << garbage << "\"" << endl;
-        /*
-        vector<string> separated = splitLine(line);
-        for(int i = 0; i < separated.size(); i++) {
-            cout << "\"" << separated[i] << "\" ";
+        if(row.size() <= 0) {
+            continue;
         }
-        cout << endl;
-         */
-        //Course currentCourse = getCourseInformation(in);
-        //Round round(currentCourse);
-        in >> garbage;
+        if(row[0] == "course") {
+            currentCourse = getCourseInformation(in, row[1]);
+            courses.push_back(currentCourse);
+        } else if(row[0] != "") {
+            Round round = Round(currentCourse);
+            for(int i = 1; i < row.size(); i++) {
+                Hole hole = currentCourse.getHole(i);
+                hole.setScore(stringToInt(row[i]));
+                round.addHole(hole);
+            }
+            bool golferExisted = false;
+            for(int i = 0; i < golfers.size(); i++) {
+                if(golfers[i].getName() == row[0]) {
+                    golfers[i].addRound(round);
+                    golferExisted = true;
+                }
+            }
+            if(!golferExisted) {
+                golfers.push_back(Golfer(row[0]));
+                golfers[golfers.size()-1].addRound(round);
+            }
+        }
+        row = getLineAndTokenize(in);
     }
 
     for(int i = 0; i < golfers.size(); i++) {
-        cout << "----------------------------------------------" << endl;
-        cout << golfers[i].getName() << endl;
-        cout << "----------------------------------------------" << endl;
-
-        cout << golfers[i].getCareerStats() << endl;
+        cout << golfers[i].getCareerStats(); cout << endl;
     }
 
     return 0;
@@ -88,52 +99,52 @@ string getCSVFilePath() {
     }
 }
 
-Course getCourseInformation(ifstream& in) {
-    //get course name
-    string courseName = "";
-    //get par
-    //get yardage
-    //create hole list
-    return Course(courseName);
-}
-
-string stripWhitespace(string str) {
-    for(int i = 0; i < str.length(); i++) {
-        if(str[i] == ' ' || str[i] == '\n' || str[i] == '\t') {
-            str[i] = '\0';
-        }
+Course getCourseInformation(ifstream& in, string courseName) {
+    vector<Hole> holes = vector<Hole>();
+    vector<string> parRow = getLineAndTokenize(in);
+    vector<string> distanceRow = getLineAndTokenize(in);
+    int size = parRow.size(); // parRow and distanceRow should be the same length.
+    for(int i = 1; i < size; i++) {
+        Hole hole = Hole(stringToInt(distanceRow[i]), stringToInt(parRow[i]), i, -1);
+        holes.push_back(hole);
     }
-    return str;
+    Course course = Course(courseName, holes);
+    course.getCourseInfo();
+    return course;
 }
 
-vector<string> splitLine(string line) {
-    vector<string> parts = vector<string>();
-    string temp = "";
+int stringToInt(string str) {
+    return atoi(str.c_str());
+}
+
+vector<string> getLineAndTokenize(istream& str)
+{
+    vector<string> result;
+    string line;
+    getline(str,line);
+    cout << "got line: \"" << line << "\"" << endl;
+    string cell;
+
+    int firstCommaIndex = 0;
+    int secondCommaIndex;
     for(int i = 0; i < line.length(); i++) {
-        if(line[i] != ',') {
-            temp += line[i];
-        } else {
-            if(temp.length() > 0) {
-                parts.push_back(temp);
-                temp = "";
+        if(line[i] == ',') {
+            secondCommaIndex = i;
+            cell = "";
+            for(int j = firstCommaIndex; j < secondCommaIndex; j++) {
+                cell += line[j];
             }
+            result.push_back(cell);
+            firstCommaIndex = secondCommaIndex+1;
         }
     }
-    temp = stripWhitespace(temp);
-    if(temp.length() > 0) {
-        parts.push_back(temp);
+    if(firstCommaIndex <= line.length() - 1) {
+        cell = "";
+        for(int j = firstCommaIndex; j < line.length(); j++) {
+            cell += line[j];
+        }
+        result.push_back(cell);
     }
-    return parts;
-}
-
-string getline(ifstream& in) {
-    string line = "";
-    char nextCharacter = '\0';
-    in >> nextCharacter;
-    while(nextCharacter != '\n') {
-        line += nextCharacter;
-        in >> nextCharacter;
-    }
-    return line;
+    return result;
 }
 
