@@ -7,6 +7,7 @@
 
 #include "Career.h"
 #include "Round.h"
+#include "Statistics.h"
 #include <string>
 
 class Golfer {
@@ -30,6 +31,10 @@ public:
 
     string getName() {
         return name;
+    }
+
+    Statistics getStats() {
+        return Statistics(career);
     }
 };
 

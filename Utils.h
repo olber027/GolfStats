@@ -88,6 +88,16 @@ int stringToInt(string str) {
     return atoi(str.c_str());
 }
 
+string doubleToString(double num) {
+    stringstream temp;
+    stringstream result;
+    temp << num;
+    for(int i = 0; i < 4 && i < temp.str().length(); i++) {
+        result << temp.str()[i];
+    }
+    return result.str();
+}
+
 Course getCourseInformation(ifstream& in, string courseName) {
     vector<Hole> holes = vector<Hole>();
     vector<string> parRow = getLineAndTokenize(in);

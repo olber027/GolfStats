@@ -11,8 +11,10 @@
 #include "Career.h"
 #include "Hole.h"
 #include "Utils.h"
+#include "Statistics.h"
 
 #include <iostream>
+#include <iomanip>
 #include <vector>
 
 int getWidth(int number) {
@@ -142,6 +144,33 @@ ostream& operator<<(ostream& out, vector<Round> rounds) {
 ostream& operator<<(ostream& out, Career career) {
 
     out << career.getRounds();
+
+    return out;
+}
+
+ostream& operator<<(ostream& out, Statistics stats) {
+
+    out << "average Yards Per Shot: " << stats.yardsPerShot() << endl;
+    out << "lifetime over/under: " << stats.lifetimeOverUnder() << endl;
+    out << "average over/under: " << stats.averageOverUnder() << endl;
+
+    out << "Hole Length | 50-100 | 101-150 | 151-200 | 201-250 | 251+ |" << endl;
+    out << "avg. o/u    |  ";
+    double num = stats.averageOUForHolesBetween(0,100);
+    string result = num > -100 ? doubleToString(num) : "N/A ";
+    out << setprecision(2) << fixed << setw(4); out << result << "  |  ";
+    num = stats.averageOUForHolesBetween(101,150);
+    result = num > -100 ? doubleToString(num) : "N/A";
+    out << setprecision(2) << fixed << setw(4); out << result << "   |  ";
+    num = stats.averageOUForHolesBetween(151,200);
+    result = num > -100 ? doubleToString(num) : "N/A";
+    out << setprecision(2) << fixed << setw(4); out << result << "   |  ";
+    num = stats.averageOUForHolesBetween(201,250);
+    result = num > -100 ? doubleToString(num) : "N/A";
+    out << setprecision(2) << fixed << setw(4); out << result << "   | ";
+    num = stats.averageOUForHolesBetween(251,99999);
+    result = num > -100 ? doubleToString(num) : "N/A";
+    out << setprecision(2) << fixed << setw(4); out << result << " |" << endl;
 
     return out;
 }

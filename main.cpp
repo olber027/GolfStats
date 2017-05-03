@@ -1,18 +1,11 @@
 #include "Golfer.h"
-#include "Course.h"
-#include "Round.h"
-#include "Career.h"
-#include "Hole.h"
 #include "Utils.h"
+#include "Statistics.h"
 #include "Output.h"
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
-#include <vector>
-#include "Windows.h"
-#include "Commdlg.h"
 
 using namespace std;
 
@@ -64,6 +57,7 @@ int main() {
     for(int i = 0; i < golfers.size(); i++) {
         out << center(7*(golfers[i].getCareer().getLongestRound() + 1), golfers[i].getName(), '~') << endl;
         out << golfers[i].getCareer() << endl;
+        out << golfers[i].getStats() << endl;
     }
 
     in.close();

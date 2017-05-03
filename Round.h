@@ -6,6 +6,7 @@
 #define GOLFSTATS_ROUND_H
 
 #include "Course.h"
+#include "Hole.h"
 #include <vector>
 #include <string>
 #include <sstream>
