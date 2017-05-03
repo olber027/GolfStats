@@ -55,16 +55,6 @@ public:
     int setHoleNumber(int number) {
         holeNumber = number;
     }
-
-    string getHoleInfo() {
-        stringstream stream;
-        stream << "| " << holeNumber << " |";
-        stream << "| " << par << " |";
-        stream << "| " << distance << " |";
-        stream << "| " << score << " |";
-        stream << endl;
-        return stream.str();
-    }
 };
 
 #endif //GOLFSTATS_HOLE_H

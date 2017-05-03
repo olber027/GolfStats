@@ -6,7 +6,6 @@
 #define GOLFSTATS_CAREER_H
 
 #include "Round.h"
-#include "Utils.h"
 #include <string>
 #include <vector>
 #include <sstream>
@@ -31,32 +30,18 @@ public:
         rounds.push_back(round);
     }
 
-    string getCareerStats() {
-        stringstream stream;
-        vector<string> courseNames = vector<string>();
+    vector<Round> getRounds() {
+        return rounds;
+    }
+
+    int getLongestRound() {
+        int longest = 0;
         for(int i = 0; i < rounds.size(); i++) {
-            if(!contains(courseNames, rounds[i].getCourse().getCourseName())) {
-                courseNames.push_back(rounds[i].getCourse().getCourseName());
+            if(rounds[i].getCourse().numberOfHoles() > longest) {
+                longest = rounds[i].getCourse().numberOfHoles();
             }
         }
-        for(int i = 0; i < courseNames.size(); i++) {
-            bool first = true;
-            for(int j = 0; j < rounds.size(); j++) {
-                if(rounds[j].getCourse().getCourseName() == courseNames[i]) {
-                    if(first) {
-                        stream << rounds[j].getCourse().getCourseInfo();
-                        for(int i = 0; i < rounds[j].getCourse().numberOfHoles() * 6; i++) {
-                            stream << "-";
-                        }
-                        stream << endl;
-                        first = false;
-                    }
-                    stream << rounds[j].getPrintableScores();
-                }
-            }
-            stream << endl;
-        }
-        return stream.str();
+        return longest;
     }
 };
 

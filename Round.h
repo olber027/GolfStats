@@ -33,19 +33,8 @@ public:
         }
     }
 
-
     void addHole(Hole hole) {
         scores.push_back(hole);
-    }
-
-    string getPrintableScores() {
-        stringstream stream;
-        stream << "| ";
-        for(int i = 0; i < scores.size(); i++) {
-            stream << getHole(i+1).getScore() << " | ";
-        }
-        stream << getFinalScore() << " |" << endl;
-        return stream.str();
     }
 
     int getFinalScore() {

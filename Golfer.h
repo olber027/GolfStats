@@ -24,11 +24,8 @@ public:
         career.addRound(round);
     }
 
-    string getCareerStats() {
-        stringstream stream;
-        stream << "---------"; stream << name << "---------" << endl;
-        stream << career.getCareerStats();
-        return stream.str();
+    Career getCareer() {
+        return career;
     }
 
     string getName() {

@@ -33,26 +33,6 @@ public:
         name = course.name;
     }
 
-    string getCourseInfo() {
-        stringstream stream;
-        stream << "| ";
-        stream << name;
-        stream << " |" << endl << "| ";
-        for (int i = 0; i < holes.size(); i++) {
-            stream << i+1 << " | ";
-        }
-        stream << endl << "| ";
-        for(int i = 0; i < holes.size(); i++) {
-            stream << getHole(i+1).getDistance() << " | ";
-        }
-        stream << getTotalYardage() << " |\n| ";
-        for(int i = 0; i < holes.size(); i++) {
-            stream << getHole(i+1).getPar() << " | ";
-        }
-        stream << getPar() << " |\n";
-        return stream.str();
-    }
-
     Hole getHole(int holeNumber) {
         if(holeNumber < 0) {
             return Hole();
@@ -88,7 +68,6 @@ public:
     string getCourseName() {
         return name;
     }
-
 };
 
 
