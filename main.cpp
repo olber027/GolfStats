@@ -17,6 +17,9 @@ int main() {
     ifstream in;
     in.open(file);
 
+    //hackiest thing ever, but... too lazy to do more sophisticated string parsing.
+    //makes the output file the same name as the input file, but with the suffix
+    //".out" instead of ".csv"
     file[file.length()-3] = 'o';
     file[file.length()-2] = 'u';
     file[file.length()-1] = 't';
@@ -28,10 +31,13 @@ int main() {
 
     while(!in.eof()) {
         if(row.size() <= 0) {
+            row = getLineAndTokenize(in);
             continue;
         }
+        //current line and the next two lines will be course information
         if(row[0] == "course") {
             currentCourse = getCourseInformation(in, row[1]);
+        //the line is a players' scores for the last read course
         } else if(row[0] != "") {
             Round round = Round(currentCourse);
             for(int i = 1; i < row.size() && row[i] != ""; i++) {
@@ -44,6 +50,7 @@ int main() {
                 if(golfers[i].getName() == row[0]) {
                     golfers[i].addRound(round);
                     golferExisted = true;
+                    break;
                 }
             }
             if(!golferExisted) {
@@ -55,7 +62,7 @@ int main() {
     }
 
     for(int i = 0; i < golfers.size(); i++) {
-        out << center(7*(golfers[i].getCareer().getLongestRound() + 1), golfers[i].getName(), '~') << endl;
+        out << center(7*(golfers[i].getCareer().getLongestRoundLength() + 1), golfers[i].getName(), '~') << endl;
         out << golfers[i].getCareer() << endl;
         out << golfers[i].getStats() << endl;
     }

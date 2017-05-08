@@ -150,9 +150,15 @@ ostream& operator<<(ostream& out, Career career) {
 
 ostream& operator<<(ostream& out, Statistics stats) {
 
+    out << "rounds played: " << stats.numRoundsPlayed() << endl;
+    out << "holes  played: " << stats.numHolesPlayed() << endl;
+    out << "distance walked (miles): " << stats.totalDistance() << endl << endl;
+
     out << "average Yards Per Shot: " << stats.yardsPerShot() << endl;
     out << "lifetime over/under: " << stats.lifetimeOverUnder() << endl;
     out << "average over/under: " << stats.averageOverUnder() << endl;
+
+    out << endl;
 
     out << "Hole Length | 50-100 | 101-150 | 151-200 | 201-250 | 251+ |" << endl;
     out << "avg. o/u    |  ";
@@ -171,6 +177,20 @@ ostream& operator<<(ostream& out, Statistics stats) {
     num = stats.averageOUForHolesBetween(251,99999);
     result = num > -100 ? doubleToString(num) : "N/A";
     out << setprecision(2) << fixed << setw(4); out << result << " |" << endl;
+
+    out << endl;
+
+    out << "Holes with par: |    3   |    4    |    5    |" << endl;
+    out << "   avg. o/u     |  ";
+    num = stats.averageOUForHolesWithPar(3);
+    result = num > -100 ? doubleToString(num) : "N/A";
+    out << setprecision(2) << fixed << setw(4); out << result << "  |  ";
+    num = stats.averageOUForHolesWithPar(4);
+    result = num > -100 ? doubleToString(num) : "N/A";
+    out << setprecision(2) << fixed << setw(4); out << result << "   |  ";
+    num = stats.averageOUForHolesWithPar(5);
+    result = num > -100 ? doubleToString(num) : "N/A";
+    out << setprecision(2) << fixed << setw(4); out << result << "   | " << endl;
 
     return out;
 }

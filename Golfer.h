@@ -16,6 +16,7 @@ private:
     Career career;
 public:
     Golfer(string Name) : name(Name), career(Career()) {}
+
     Golfer(const Golfer &golfer) {
         name = golfer.name;
         career = golfer.career;

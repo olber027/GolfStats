@@ -34,7 +34,8 @@ public:
         return rounds;
     }
 
-    int getLongestRound() {
+    //returns the length of the longest round of the career (used for output purposes)
+    int getLongestRoundLength() {
         int longest = 0;
         for(int i = 0; i < rounds.size(); i++) {
             if(rounds[i].getCourse().numberOfHoles() > longest) {

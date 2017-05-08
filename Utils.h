@@ -15,6 +15,7 @@
 
 using namespace std;
 
+//checks whether the given vector of strings contains the given string.
 bool contains(vector<string> list, string str) {
     for(int i = 0; i < list.size(); i++) {
         if(str == list[i]) {
@@ -24,6 +25,7 @@ bool contains(vector<string> list, string str) {
     return false;
 }
 
+//dirty windows file explorer code.
 string getCSVFilePath() {
     OPENFILENAME ofn;       // common dialog box structure
     char szFile[260];       // buffer for file name
@@ -54,6 +56,7 @@ string getCSVFilePath() {
     }
 }
 
+//gets a line, and returns a vector with each cell as a string.
 vector<string> getLineAndTokenize(istream& str)
 {
     vector<string> result;
@@ -98,10 +101,12 @@ string doubleToString(double num) {
     return result.str();
 }
 
+//reads in course information.
 Course getCourseInformation(ifstream& in, string courseName) {
     vector<Hole> holes = vector<Hole>();
     vector<string> parRow = getLineAndTokenize(in);
     vector<string> distanceRow = getLineAndTokenize(in);
+
     int size = parRow.size(); // parRow and distanceRow should be the same length.
     for(int i = 1; i < size; i++) {
         if(distanceRow[i] != "" && parRow[i] != "") {

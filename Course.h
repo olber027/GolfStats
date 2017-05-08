@@ -49,6 +49,7 @@ public:
         return holes.size();
     }
 
+    //returns par for the course.
     int getPar() {
         int par = 0;
         for(int i = 0; i < holes.size(); i++) {

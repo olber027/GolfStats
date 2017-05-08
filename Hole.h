@@ -5,11 +5,6 @@
 #ifndef GOLFSTATS_HOLE_H
 #define GOLFSTATS_HOLE_H
 
-#include <string>
-#include <sstream>
-
-using namespace std;
-
 class Hole {
 private:
     int distance;
