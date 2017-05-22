@@ -34,6 +34,10 @@ public:
         }
     }
 
+    bool operator<(Round &round) {
+        return course.getCourseName() < round.course.getCourseName();
+    }
+
     void addHole(Hole hole) {
         scores.push_back(hole);
     }

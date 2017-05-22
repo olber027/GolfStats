@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <algorithm>
 
 class Career {
 private:
@@ -31,6 +32,7 @@ public:
     }
 
     vector<Round> getRounds() {
+        sort(rounds.begin(), rounds.end());
         return rounds;
     }
 

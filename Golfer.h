@@ -22,6 +22,10 @@ public:
         career = golfer.career;
     }
 
+    const bool operator<(const Golfer &golfer) {
+        return name < golfer.name;
+    }
+
     void addRound(Round round) {
         career.addRound(round);
     }

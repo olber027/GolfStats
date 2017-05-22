@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -60,6 +61,8 @@ int main() {
         }
         row = getLineAndTokenize(in);
     }
+
+    sort(golfers.begin(), golfers.end());
 
     for(int i = 0; i < golfers.size(); i++) {
         out << center(7*(golfers[i].getCareer().getLongestRoundLength() + 1), golfers[i].getName(), '~') << endl;
